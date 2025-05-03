@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NACOS Presidents Gallery | Computer Science Department</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2e7d32; /* Green color */
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            border-bottom: 2px solid #2e7d32; /* Green color */
+            color: #2e7d32;
+        }
+
+        nav ul li a.active {
+            border-bottom: 2px solid #2e7d32; /* Green color */
+            color: #2e7d32;
+        }
+
+        .login-btn {
+            background-color: #2e7d32; /* Green color */
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #1b5e20; /* Darker green */
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+        }
+
+        /* Page Title Section */
+        .page-title {
+            padding: 120px 0 40px;
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+        }
+
+        .page-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Filter Navigation */
+        .filter-nav {
+            background-color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .filter-btn.active {
+            background-color: #2e7d32;
+            color: white;
+        }
+
+        /* Presidents Gallery */
+        .presidents-gallery {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .president-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .president-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .president-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .president-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .president-card:hover .president-image img {
+            transform: scale(1.05);
+        }
+
+        .president-term {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #2e7d32;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .president-info {
+            padding: 20px;
+        }
+
+        .president-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #2e7d32;
+        }
+
+        .president-info .position {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .president-contact {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .president-contact span {
+            color: #777;
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+
+        .president-contact a {
+            color: #2e7d32;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .president-contact a:hover {
+            color: #1b5e20;
+            text-decoration: underline;
+        }
+
+        .president-bio {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: #f0f0f0;
+            color: #2e7d32;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background-color: #2e7d32;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            display: none;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #999;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #2e7d32;
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: white;
+        }
+
+        .footer-column p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            opacity: 0.8;
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .footer-social-links a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            nav {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                height: 0;
+                overflow: hidden;
+                transition: height 0.3s ease;
+            }
+
+            nav.active {
+                height: 250px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .page-title h2 {
+                font-size: 2rem;
+            }
+
+            .filter-btn {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+
+            .footer-column {
+                flex: 0 0 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .page-title p {
+                font-size: 1rem;
+            }
+
+            .header-container {
+                padding: 0 10px;
+            }
+
+            .logo h1 {
+                font-size: 16px;
+            }
+
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="NACOSLOGO.jpg" alt="NACOS Logo">
+                <h1>Computer Science Department</h1>
+            </div>
+            <button class="hamburger" id="hamburger">☰</button>
+            <nav id="nav">
+                <ul>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="about.php">About</a></li>
+                    <li><a href="projects.php">Projects</a></li>
+                    <li><a href="department.php">Department Gallery</a></li>
+                    <li><a href="presidents.php" class="active">NACOS Gallery</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-title">
+        <h2>NACOS Presidents Gallery</h2>
+        <p>Honoring the leadership and legacy of our past and present NACOS-ABCOAD presidents who have contributed to the growth of our department.</p>
+    </section>
+
+    <section class="filter-nav">
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All Presidents</button>
+            <button class="filter-btn" data-filter="current">Current Administration</button>
+            <button class="filter-btn" data-filter="past">Past Administrations</button>
+        </div>
+    </section>
+
+    <section class="presidents-gallery">
+        <div class="gallery-container" id="gallery-container">
+            <!-- Presidents will be loaded here from JavaScript -->
+        </div>
+        <div class="empty-state" id="empty-state">
+            <h3>No presidents found</h3>
+            <p>There are no presidents matching your current filter. Please try another filter option.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>About NACOS</h3>
+                <p>The Nigerian Association of Computer Science Students (NACOS) is the umbrella body for all Computer Science students in Nigeria.</p>
+                <div class="footer-social-links">
+                    <a href="https://wa.me/+2347043527649" aria-label="Facebook">w</a>
+                    <a href="#" aria-label="Twitter">t</a>
+                    <a href="#" aria-label="Instagram">i</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+    
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <p>Department of Computer Science<br>
+                Audu Bako College of Agriculture<br>
+                Dambatta, Kano State</p>
+                <p>Email: webagency50@gmail.com<br>
+                Phone: +234704 352 7649</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Computer Science Department, Audu Bako College of Agriculture. Powered by NACOS.</p>
+            <hr>   
+            <p>ABCOAD Developer Team</p>
+        </div>
+    </footer>
+
+    <script>
+        // Presidents Data
+        const presidentsData = [
+            {
+                id: 1,
+                name: "Basiru Lawan (Web Learner)",
+                position: "NACOS President",
+                term: "2024-2025",
+                phone: "+234704 352 7649",
+                email: "webagency50@gmail",
+                image: "Web.jpg",
+                bio: "Current NACOS president leading with innovation and commitment to excellence in computer science education at Audu Bako College of Agriculture, Dambatta.",
+                socialLinks: {
+                    Whatsapp: "https://wa.me/+2347043527649",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "current"
+            },
+               // Secretary Data
+            {
+                id: 1,
+                name: " Saifullahi Khamis (Encrypted)",
+                position: "NACOS Secretary",
+                term: "2024-2025",
+                phone: "Secured",
+                email: "encrypted@gmail",
+                image: "encrypted.png",
+                bio: "Current NACOS Secretary leading with innovation and commitment to excellence in computer science educationat Audu Bako College of Agriculture, Dambatta.",
+                socialLinks: {
+                    Whatsapp: "https://wa.me/",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "current"
+            },
+
+                            // past president data
+
+            {
+                id: 2,
+                name: "Musa Muhammad Ahmad",
+                position: "NACOS President",
+                term: "2023-2024",
+                phone: "+234 803 456 7890",
+                email: "ameermatawallene@gmail.com",
+                image: "musa.jpg",
+                bio: "Lead the association through significant technological advancements",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+                //past secretary data 
+            {
+                id: 2,
+                name: "Samaila Sulaiman",
+                position: "NACOS Secretary",
+                term: "2023-2024",
+                phone: "+234903 665 4312",
+                email: "master@gmail.com.com",
+                image: "",
+                bio: "Lead the association through significant technological advancements.",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+                //past president data
+            {
+                id: 3,
+                name: "Hamisu Hamza ",
+                position: "NACOS President",
+                term: "2022-2023",
+                phone: "+234 816 610 7777",
+                email: "hamisugwanda01@gmail.com",
+                image: "hamisu.jpg",
+                bio: "Established key partnerships and improved the NACOS structure.",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+
+            {
+                id: 3,
+                name: "Ibrahim Salisu Aliyu",
+                position: "NACOS Secretary",
+                term: "2022-2023",
+                phone: "+234906 012 4461",
+                email: "ibrahimsalisualiyu9@gmail.com",
+                image: "ibrahim.jpg",
+                bio: "Established key partnerships and improved the NACOS structure.",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+                     //president datass
+                     {
+                id: 2,
+                name: "Musa Muhammad Ahmad",
+                position: "NACOS President",
+                term: "2021-2022",
+                phone: "+234 803 456 7890",
+                email: "ameermatawallene@gmail.com",
+                image: "musa.jpg",
+                bio: "Lead the association through significant technological advancements",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+
+                    //Secretary datass
+                    {
+                id: 2,
+                name: "Kabiru Jibril",
+                position: "NACOS Secretary",
+                term: "2021-2022",
+                phone: "+234 808 875 6300",
+                email: "kabirujibril@gmail.com",
+                image: "kb.jpg",
+                bio: "Lead the association through significant technological advancements",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+
+            // president data
+            {
+                id: 5,
+                name: "Nill Nill",
+                position: "NACOS President",
+                term: "2020-2021",
+                phone: "+234 703 210 9876",
+                email: "ibrahim.h@nacos.org",
+                image: "/api/placeholder/400/500",
+                bio: "Guided the department through remote learning challenges during the pandemic period.",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+
+            // Secretary data
+            {
+                id: 5,
+                name: "Nill Nill",
+                position: "NACOS Secretary",
+                term: "2020-2021",
+                phone: "+234 703 210 9876",
+                email: "ibrahim.h@nacos.org",
+                image: "/api/placeholder/400/500",
+                bio: "Guided the department through remote learning challenges during the pandemic period.",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+              
+            //president data
+            {
+                id: 6,
+                name: "Nill nill",
+                position: "NACOS President",
+                term: "2019-2020",
+                phone: "+234 813 432 1098",
+                email: "zainab.a@nacos.org",
+                image: "/api/placeholder/400/500",
+                bio: "Pioneered the annual tech fair that continues to be a highlight of the department's calendar.",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            },
+
+            //secretary data
+
+            {
+                id: 6,
+                name: "Nill nill",
+                position: "NACOS Secretary",
+                term: "2019-2020",
+                phone: "+234 813 432 1098",
+                email: "zainab.a@nacos.org",
+                image: "/api/placeholder/400/500",
+                bio: "Pioneered the annual tech fair that continues to be a highlight of the department's calendar.",
+                socialLinks: {
+                    facebook: "#",
+                    twitter: "#",
+                    linkedin: "#"
+                },
+                type: "past"
+            }
+        ];
+
+        // Function to create president cards
+        function createPresidentCard(president) {
+            return `
+                <div class="president-card" data-type="${president.type}">
+                    <div class="president-image">
+                        <img src="${president.image}" alt="${president.name}">
+                        <div class="president-term">${president.term}</div>
+                    </div>
+                    <div class="president-info">
+                        <h3>${president.name}</h3>
+                        <span class="position">${president.position}</span>
+                        <div class="president-contact">
+                            <span>Phone:</span>
+                            <a href="tel:${president.phone}">${president.phone}</a>
+                        </div>
+                        <div class="president-contact">
+                            <span>Email:</span>
+                            <a href="mailto:${president.email}">${president.email}</a>
+                        </div>
+                        <p class="president-bio">${president.bio}</p>
+                        <div class="social-links">
+                            <a href="${president.socialLinks.facebook}" aria-label="Facebook">f</a>
+                            <a href="${president.socialLinks.twitter}" aria-label="Twitter">t</a>
+                            <a href="${president.socialLinks.linkedin}" aria-label="LinkedIn">in</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to load presidents based on filter
+        function loadPresidents(filter = 'all') {
+            const galleryContainer = document.getElementById('gallery-container');
+            const emptyState = document.getElementById('empty-state');
+            galleryContainer.innerHTML = '';
+            
+            let filteredPresidents = presidentsData;
+            if (filter !== 'all') {
+                filteredPresidents = presidentsData.filter(president => president.type === filter);
+            }
+            
+            if (filteredPresidents.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                
+                filteredPresidents.forEach((president, index) => {
+                    const card = createPresidentCard(president);
+                    galleryContainer.innerHTML += card;
+                });
+                
+                // Apply animation delay to each card
+                const cards = document.querySelectorAll('.president-card');
+                cards.forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                });
+            }
+        }
+
+        // Initialize the gallery
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPresidents();
+            
+            // Set up filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Load presidents based on filter
+                    const filter = this.getAttribute('data-filter');
+                    loadPresidents(filter);
+                });
+            });
+            
+            // Add scroll effect to header
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.style.padding = '10px 0';
+                    header.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.2)';
+                } else {
+                    header.style.padding = '15px 0';
+                    header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                }
+            });
+
+            // Mobile menu toggle
+            document.getElementById('hamburger').addEventListener('click', function() {
+                document.getElementById('nav').classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
