@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Department of Computer Science - Audu Bako College of Agriculture</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2e7d32; /* Green color */
+            line-height: 1.2;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            border-bottom: 2px solid #2e7d32; /* Green color */
+            color: #2e7d32;
+        }
+
+        .login-btn {
+            background-color: #2e7d32; /* Green color */
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #1b5e20; /* Darker green */
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            max-width: 1200px;
+            margin: 120px auto 50px;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            animation: fadeInDown 1s ease;
+        }
+
+        .page-title h2 {
+            font-size: 2.5rem;
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #2e7d32;
+            margin: 20px auto 0;
+        }
+
+        /* Department Overview Section */
+        .department-overview {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        .department-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .department-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .department-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .department-info {
+            flex: 1;
+        }
+
+        .department-info h3 {
+            font-size: 1.8rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .department-info p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        /* Leadership Section */
+        .leadership {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #2e7d32;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #2e7d32;
+        }
+
+        .leadership-profiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .profile-card {
+            flex: 1;
+            min-width: 280px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1.4s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .profile-card:hover .profile-image img {
+            transform: scale(1.08);
+        }
+
+        .profile-info {
+            padding: 20px;
+        }
+
+        .profile-info h4 {
+            font-size: 1.3rem;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .profile-info h5 {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .profile-info p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .profile-contact {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            color: #2e7d32;
+        }
+
+        .profile-contact i {
+            margin-right: 8px;
+        }
+
+        /* Programs Section */
+        .programs {
+            margin-bottom: 60px;
+        }
+
+        .programs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .program-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            animation: fadeIn 1.6s ease;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .program-image {
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .program-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .program-card:hover .program-image img {
+            transform: scale(1.08);
+        }
+
+        .program-info {
+            padding: 20px;
+        }
+
+        .program-info h4 {
+            font-size: 1.2rem;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .program-info p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .program-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Facilities Section */
+        .facilities {
+            margin-bottom: 60px;
+            animation: fadeIn 1.8s ease;
+        }
+
+        .facilities-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .facility-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .facility-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .facility-image {
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .facility-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .facility-card:hover .facility-image img {
+            transform: scale(1.08);
+        }
+
+        .facility-info {
+            padding: 20px;
+        }
+
+        .facility-info h4 {
+            font-size: 1.2rem;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .facility-info p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Research Areas Section */
+        .research {
+            margin-bottom: 60px;
+            animation: fadeIn 2s ease;
+        }
+
+        .research-areas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .research-area {
+            background-color: #f2f8f2;
+            border-left: 4px solid #2e7d32;
+            padding: 20px;
+            border-radius: 4px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .research-area:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .research-area h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .research-area p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Staff Section */
+        .staff {
+            margin-bottom: 60px;
+        }
+
+        .staff-profiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .staff-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            text-align: center;
+            animation: fadeIn 2.2s ease;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .staff-image {
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .staff-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .staff-card:hover .staff-image img {
+            transform: scale(1.08);
+        }
+
+        .staff-info {
+            padding: 15px;
+        }
+
+        .staff-info h4 {
+            font-size: 1.1rem;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .staff-info h5 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .staff-contact {
+            font-size: 0.85rem;
+            color: #2e7d32;
+        }
+
+        /* Contact Section */
+        .contact {
+            margin-bottom: 60px;
+            animation: fadeIn 2.4s ease;
+        }
+
+        .contact-info {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .contact-item h4 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .contact-item p, .contact-item address {
+            color: #666;
+            line-height: 1.6;
+            font-style: normal;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: #2e7d32;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: #1b5e20;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2e7d32;
+            color: white;
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: white;
+        }
+
+        .footer-column p,
+        .footer-column address {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            font-style: normal;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            opacity: 0.8;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #2e7d32;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .department-overview {
+                flex-direction: column;
+            }
+
+            .department-image, .department-info {
+                flex: none;
+                width: 100%;
+            }
+
+            .leadership-profiles {
+                justify-content: center;
+            }
+
+            .profile-card {
+                flex: 0 0 calc(50% - 15px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            nav {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                height: 0;
+                overflow: hidden;
+                transition: height 0.3s ease;
+            }
+
+            nav.active {
+                height: 250px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .page-title h2 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .profile-card {
+                flex: 0 0 100%;
+            }
+
+            .footer-column {
+                flex: 0 0 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .department-info h3,
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .header-container {
+                padding: 0 10px;
+            }
+
+            .logo h1 {
+                font-size: 14px;
+            }
+
+            .back-to-top {
+                right: 15px;
+                bottom: 15px;
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+            }
+        }
+        .rank{
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="NACOSLOGO.jpg" alt="ABCA Logo">
+                <h1>Audu Bako College of Agriculture, Dambatta, Kano</h1>
+            </div>
+            <button class="hamburger" id="hamburger">☰</button>
+            <nav id="nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#" class="active">About</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Department Gallery</a></li>
+                    <li><a href="presidents.html">NACOS Gallery</a></li>
+                </ul>
+            </nav>
+        
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="page-title">
+            <h2>Department of Computer Science</h2>
+            <p>Delivering quality education in computing and information technology to produce competent graduates for the digital age</p>
+        </section>
+
+        <section class="department-overview">
+            <div class="department-image">
+                <img src="D link.jpeg" alt="Computer Science Department">
+            </div>
+            <div class="department-info">
+                <h3>About Our Department</h3>
+                <p>The Department of Computer Science at Audu Bako College of Agriculture, Dambatta was established to provide students with quality education in computing, information technology, and related fields. Our department is committed to preparing students for the challenges of the digital era through a blend of theoretical knowledge and practical skills.</p>
+                <p>With state-of-the-art computing facilities and experienced faculty members, we offer programs that meet industry standards and equip our students with the knowledge and skills needed to excel in their careers. Our curriculum is regularly updated to reflect the latest developments in the field of computer science.</p>
+                <p>We aim to produce graduates who can contribute effectively to Nigeria's digital transformation and compete favorably in the global job market. Our focus areas include programming, database management, networking, software development, and computer applications in agriculture.</p>
+            </div>
+        </section>
+
+        <section class="leadership">
+            <h3 class="section-title">College Leadership</h3>
+            <div class="leadership-profiles">
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="provost.png" alt="College Provost">
+                    </div>
+                    <div class="profile-info">
+                        <h4>Prof M.A Wailare</h4>
+                        <h5>Provost, ABCOA Dambatta</h5>
+                        <p>From the provost's desk!</p>
+                        <p>Welcome to Audu Bako College of Agriculture, Dambatta</p>
+                        <p>Audu Bako College of Agriculture Dambatta is one of the oldest and one of the best colleges of Agriculture in Nigeria. It is dedicated to quality teaching, learning, research and community service. We have over the past few years through our various programmes trained and developed middle level manpower in all fields of agriculture and allied sciences thereby empowering the youth for economic self reliance within the framework of Agricultural Value Chain and also satisfying the state and national manpower need in the agricultural sector. As the college of first choice and a great citadel of learning, we give a lot of attention to the development and welfare of our staff and students.
+                            We thank you visiting our website and do not hesitate to contact us should you need any further help from us.
+                           <strong> THANK YOU VERY MUCH</strong> </p>
+    
+                    </div>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="BARI.JPG" alt="HOD Computer Science">
+                    </div>
+                    <div class="profile-info">
+                        <h4>C.itp Abdulkadir Shehu Bari <sub class="rank">MCPN, MNCS, MAITP,MCSTA</sub></h4>
+                        <h5>Head of Department</h5>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="programs">
+            <h3 class="section-title">Our Programs</h3>
+            <div class="programs-container">
+                <div class="program-card">
+                    <div class="program-image">
+                        <img src="COMPUTER SCINCE.jpeg" alt="ND Computer Science">
+                    </div>
+                    <div class="program-info">
+                        <h4>National Diploma in Computer Science</h4>
+                        <p>A two-year program designed to provide students with foundational knowledge and skills in computer science and information technology.</p>
+                        <div class="program-details">
+                            <span>Duration: 2 years</span>
+                            <span>NBTE Accredited</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="program-card">
+                    <div class="program-image">
+                        <img src="SOFTWARE AND WEB.jpeg" alt="HND Software and Web Development">
+                    </div>
+                    <div class="program-info">
+                        <h4>Higher National Diploma in Software and Web Development</h4>
+                        <p>An advanced two-year program for ND graduates who wish to deepen their knowledge and skills in specialized areas of Web Development.</p>
+                        <div class="program-details">
+                            <span>Duration: 2 years</span>
+                            <span>NBTE Accredited</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="program-card">
+                    <div class="program-image">
+                        <img src="networking.jpg" alt="HND Networking And Cloud Computing ">
+                    </div>
+                    <div class="program-info">
+                        <h4>Higher National Diploma in Networking And Cloud Computing</h4>
+                        <p>An advanced two-year program for ND graduates who wish to deepen their knowledge and skills in specialized areas of Networking And Cloud Computing.</p>
+                        <div class="program-details">
+                            <span>Duration: 2 years</span>
+                            <span>NBTE Accredited</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="research">
+            <h3 class="section-title">Research Areas</h3>
+            <div class="research-areas">
+                <div class="research-area">
+                    <h4>Agricultural Informatics</h4>
+                    <p>Application of computing technologies to improve agricultural productivity, farm management, and agricultural extension services.</p>
+                </div>
+                <div class="research-area">
+                    <h4>Database Systems</h4>
+                    <p>Design, implementation, and management of database systems for efficient data storage, retrieval, and analysis.</p>
+                </div>
+                <div class="research-area">
+                    <h4>Artificial Intelligence</h4>
+                    <p>Development of AI algorithms and applications with a focus on agricultural systems and natural resource management.</p>
+                </div>
+                <div class="research-area">
+                    <h4>Computer Networks</h4>
+                    <p>Research on network protocols, security, and IoT applications in agricultural and rural settings.</p>
+                </div>
+                <div class="research-area">
+                    <h4>Software Engineering</h4>
+                    <p>Development of methodologies and tools for creating efficient, reliable, and user-friendly software systems.</p>
+                </div>
+                <div class="research-area">
+                    <h4>Mobile Computing</h4>
+                    <p>Research on mobile applications and services that can support agricultural activities and rural development.</p>
+                </div>
+            </div>
+        </section>
+
+       
+
+        <section class="contact">
+            <h3 class="section-title">Contact Us</h3>
+            <div class="contact-info">
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <h4>Department Address</h4>
+                        <p>Department of Computer Science<br>
+                        Audu Bako College of Agriculture<br>
+                        P.M.B. 3117, Dambatta<br>
+                        Kano State, Nigeria</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>Email & Phone</h4>
+                        <p>Email: webagency50@gmail.com<br>
+                        Phone: +234906 546 8062<br>
+                        Fax: +234704 352 7649</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>Office Hours</h4>
+                        <p>Monday - Friday: 8:00 AM - 4:00 PM<br>
+                        Saturday: 9:00 AM - 1:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a style="text-decoration: none;" href="https://wa.me/+2349065468062" aria-label="Facebook">W</a>
+                    <a href="#" aria-label="Twitter">t</a>
+                    <a href="#" aria-label="Instagram">i</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                    <a href="#" aria-label="YouTube">yt</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>About ABCOAD</h3>
+                <p>Audu Bako College of Agriculture, Dambatta is a premier agricultural institution in Northern Nigeria, committed to excellence in agricultural education, research, and extension services.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="https://www.abcoad.edu.ng/">College Homepage</a></li>
+                    <li><a href="#">Admissions</a></li>
+                    <li><a href="#">Academic Calendar</a></li>
+                    <li><a href="https://portals.abcoad.edu.ng/student">Student Portal</a></li>
+                    <li><a href="#">E-Learning</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <address>
+                    Audu Bako College of Agriculture<br>
+                    P.M.B. 3159, Dambatta<br>
+                    Kano State, Nigeria<br><br>
+                    Phone: +234906 546 8062 <br>
+                    Phone: +234704 352 7649<br>
+                    Email: webagency50@gmail.com
+                </address>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Department of Computer Science, Audu Bako College of Agriculture, Dambatta. All Rights Reserved.</p>
+            <hr>   
+            <p>ABCOAD Developers Team</p>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 50) {
+                header.style.padding = '10px 0';
+                header.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.padding = '15px 0';
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
