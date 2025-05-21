@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Dashboard - Receipt Management</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #00ff00  0%, #ffffff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-text {
+            text-align: left;
+        }
+
+        .header h1 {
+            color: #2e7d32;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Logout Button */
+        .btn-logout {
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: fit-content;
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.2);
+        }
+
+        .btn-logout:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-light));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card.green {
+            --accent-color: #27ae60;
+            --accent-light: #2ecc71;
+        }
+
+        .stat-card.red {
+            --accent-color: #e74c3c;
+            --accent-light: #ff6b6b;
+        }
+
+        .stat-card.blue {
+            --accent-color: #3498db;
+            --accent-light: #74b9ff;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .stat-sublabel {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Receipts Grid */
+        .receipts-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+            min-width: 200px;
+        }
+
+        .search-input:focus {
+            border-color: #2e7d32;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            cursor: pointer;
+            background: white;
+        }
+
+        .receipts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .receipt-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #e0e0e0;
+        }
+
+        .receipt-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .receipt-card.printed {
+            border-left-color: #27ae60;
+        }
+
+        .receipt-card.pending {
+            border-left-color: #e74c3c;
+        }
+
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .receipt-id {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .receipt-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-printed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .receipt-details {
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .detail-label {
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .amount {
+            color: #2e7d32;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .receipt-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #2e7d32;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            background: #1b5e20;
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-logout {
+                align-self: flex-end;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .receipts-section {
+                padding: 20px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filter {
+                justify-content: stretch;
+            }
+
+            .search-input,
+            .filter-select {
+                flex: 1;
+                min-width: auto;
+            }
+
+            .receipts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .receipt-actions {
+                flex-direction: column;
+            }
+
+            .fab {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .receipt-card {
+                padding: 20px;
+            }
+
+            .btn-logout {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2e7d32;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state img {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>Receipt Dashboard</h1>
+                    <p>Manage student payment receipts - Computer Science department</p>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <span>🚪</span> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card green">
+                <div class="stat-icon">✓</div>
+                <div class="stat-number" id="totalPrinted">0</div>
+                <div class="stat-label">Total Printed Receipts</div>
+                <div class="stat-sublabel">Successfully processed</div>
+            </div>
+
+            <div class="stat-card red">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-number" id="totalPending">0</div>
+                <div class="stat-label">Pending Receipts</div>
+                <div class="stat-sublabel">Awaiting processing</div>
+            </div>
+
+            <div class="stat-card blue">
+                <div class="stat-icon">₦</div>
+                <div class="stat-number" id="totalAmount">₦0</div>
+                <div class="stat-label">Total Amount</div>
+                <div class="stat-sublabel">Printed receipts only</div>
+            </div>
+        </div>
+
+        <!-- Receipts Section -->
+        <div class="receipts-section">
+            <div class="section-header">
+                <h2 class="section-title">Receipt Management</h2>
+                <div class="search-filter">
+                    <input type="text" class="search-input" placeholder="Search by student name or ID..." id="searchInput">
+                    <select class="filter-select" id="statusFilter">
+                        <option value="all">All Receipts</option>
+                        <option value="pending">Pending Only</option>
+                        <option value="printed">Printed Only</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="receipts-grid" id="receiptsGrid">
+                <!-- Receipts will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="refreshData()" title="Refresh Data">
+        🔄
+    </div>
+
+    <script>
+        // Sample data - Replace with actual API calls
+        let receiptsData = [
+            {
+                id: 'RCP001',
+                studentName: 'Web Learner',
+               studentId: 'HNDSWD/24/CS/0013',
+                amount: 100,
+                date: '2025-01-20',
+                status: 'pending',
+                description: 'Printed on AbcoadCyberMart computer Science Department'
+            },
+            {
+                id: 'RCP002',
+                studentName: 'Saifullah Encrypted',
+                studentId: 'HNDNTW/25/CS/0001',
+                amount: 100,
+                date: '2025-01-20',
+                status: 'printed',
+                description: 'Printed on AbcoadCyberMart computer Science Department'
+            },
+            {
+                id: 'RCP003',
+                studentName: 'Dan hassan',
+                studentId: 'IT/25/CS/0014',
+                amount: 100,
+                date: '2025-01-21',
+                status: 'pending',
+                description: 'Printed on AbcoadCyberMart computer Science Department'
+            },
+            {
+                id: 'RCP004',
+                studentName: 'Fatima Muhammad Umar',
+                studentId: 'HNDSWD/24/CS/0017',
+                amount: 100,
+                date: '2025-01-21',
+                status: 'printed',
+                description: 'Printed on AbcoadCyberMart computer Science Department'
+            },
+            {
+                id: 'RCP005',
+                studentName: 'Yusuf Ali',
+                studentId: 'NDCOM/24/CS/0003',
+                amount: 100,
+                date: '2025-01-21',
+                status: 'pending',
+                description: ' Printed on AbcoadCyberMart computer Science Department'
+            }
+        ];
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadReceipts();
+            updateStatistics();
+            setupEventListeners();
+            
+            // Show welcome message
+            swal({
+                title: "Welcome to Receipt Dashboard!",
+                text: "Manage your student receipt payments efficiently",
+                icon: "success",
+                timer: 3000
+            });
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', filterReceipts);
+            document.getElementById('statusFilter').addEventListener('change', filterReceipts);
+        }
+
+        // Load and display receipts
+        function loadReceipts() {
+            const grid = document.getElementById('receiptsGrid');
+            
+            if (receiptsData.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📋</div>
+                        <h3>No receipts found</h3>
+                        <p>There are no payment receipts to display at the moment.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = receiptsData.map(receipt => `
+                <div class="receipt-card ${receipt.status}" data-receipt='${JSON.stringify(receipt)}'>
+                    <div class="receipt-header">
+                        <div class="receipt-id">${receipt.id}</div>
+                        <div class="receipt-status status-${receipt.status}">
+                            ${receipt.status.toUpperCase()}
+                        </div>
+                    </div>
+                    <div class="receipt-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Student:</span>
+                            <span class="detail-value">${receipt.studentName}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">ID:</span>
+                            <span class="detail-value">${receipt.studentId}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Date:</span>
+                            <span class="detail-value">${new Date(receipt.date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Description:</span>
+                            <span class="detail-value">${receipt.description}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Amount:</span>
+                            <span class="detail-value amount">₦${receipt.amount}</span>
+                        </div>
+                    </div>
+                    <div class="receipt-actions">
+                        <button class="btn btn-secondary" onclick="viewReceipt('${receipt.id}')">
+                            👁️ View
+                        </button>
+                        <button class="btn btn-primary" 
+                                onclick="printReceipt('${receipt.id}')"
+                                ${receipt.status === 'printed' ? 'disabled' : ''}>
+                            🖨️ ${receipt.status === 'printed' ? 'Printed' : 'Print'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const totalPrinted = receiptsData.filter(r => r.status === 'printed').length;
+            const totalPending = receiptsData.filter(r => r.status === 'pending').length;
+            const totalAmount = receiptsData
+                .filter(r => r.status === 'printed')
+                .reduce((sum, r) => sum + r.amount, 0);
+
+            document.getElementById('totalPrinted').textContent = totalPrinted;
+            document.getElementById('totalPending').textContent = totalPending;
+            document.getElementById('totalAmount').textContent = `₦${totalAmount.toLocaleString()}`;
+        }
+
+        // Filter receipts
+        function filterReceipts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            let filteredData = receiptsData.filter(receipt => {
+                const matchesSearch = receipt.studentName.toLowerCase().includes(searchTerm) ||
+                                    receipt.studentId.toLowerCase().includes(searchTerm) ||
+                                    receipt.id.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = statusFilter === 'all' || receipt.status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+
+            // Update display with filtered data
+            const grid = document.getElementById('receiptsGrid');
+            
+            if (filteredData.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🔍</div>
+                        <h3>No matching receipts</h3>
+                        <p>Try adjusting your search terms or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredData.map(receipt => `
+                <div class="receipt-card ${receipt.status}" data-receipt='${JSON.stringify(receipt)}'>
+                    <div class="receipt-header">
+                        <div class="receipt-id">${receipt.id}</div>
+                        <div class="receipt-status status-${receipt.status}">
+                            ${receipt.status.toUpperCase()}
+                        </div>
+                    </div>
+                    <div class="receipt-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Student:</span>
+                            <span class="detail-value">${receipt.studentName}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">ID:</span>
+                            <span class="detail-value">${receipt.studentId}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Date:</span>
+                            <span class="detail-value">${new Date(receipt.date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Description:</span>
+                            <span class="detail-value">${receipt.description}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Amount:</span>
+                            <span class="detail-value amount">₦${receipt.amount}</span>
+                        </div>
+                    </div>
+                    <div class="receipt-actions">
+                        <button class="btn btn-secondary" onclick="viewReceipt('${receipt.id}')">
+                            👁️ View
+                        </button>
+                        <button class="btn btn-primary" 
+                                onclick="printReceipt('${receipt.id}')"
+                                ${receipt.status === 'printed' ? 'disabled' : ''}>
+                            🖨️ ${receipt.status === 'printed' ? 'Printed' : 'Print'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Print receipt function
+        function printReceipt(receiptId) {
+            const receipt = receiptsData.find(r => r.id === receiptId);
+            
+            if (!receipt) {
+                swal("Error!", "Receipt not found!", "error");
+                return;
+            }
+
+            if (receipt.status === 'printed') {
+                swal("Already Printed!", "This receipt has already been printed once.", "warning");
+                return;
+            }
+
+            swal({
+                title: "Print Receipt?",
+                text: `Print receipt for ${receipt.studentName} (₦${receipt.amount})?`,
+                icon: "info",
+                buttons: ["Cancel", "Print"],
+                dangerMode: false,
+            }).then((willPrint) => {
+                if (willPrint) {
+                    // Simulate printing process
+                    swal({
+                        title: "Printing...",
+                        text: "Please wait while the receipt is being printed.",
+                        icon: "info",
+                        buttons: false,
+                        timer: 2000
+                    }).then(() => {
+                        // Update receipt status
+                        receipt.status = 'printed';
+                        
+                        // Refresh display
+                        loadReceipts();
+                        updateStatistics();
+                        
+                        // Show success message
+                        swal({
+                            title: "Receipt Printed!",
+                            text: `Receipt ${receiptId} has been successfully printed for ${receipt.studentName}.`,
+                            icon: "success",
+                            timer: 3000
+                        });
+                    });
+                }
+            });
+        }
+
+        // View receipt function
+        function viewReceipt(receiptId) {
+            const receipt = receiptsData.find(r => r.id === receiptId);
+            
+            if (!receipt) {
+                swal("Error!", "Receipt not found!", "error");
+                return;
+            }
+
+            const receiptDetails = `
+                Receipt ID: ${receipt.id}
+                Student: ${receipt.studentName}
+                ID: ${receipt.studentId}
+                Date: ${new Date(receipt.date).toLocaleDateString()}
+                Description: ${receipt.description}
+                Amount: ₦${receipt.amount}
+                Status: ${receipt.status.toUpperCase()}
+            `;
+
+            swal({
+                title: "Receipt Details",
+                text: receiptDetails,
+                icon: "info"
+            });
+        }
+
+        // Refresh data function
+        function refreshData() {
+            swal({
+                title: "Refreshing...",
+                text: "Updating receipt data from server.",
+                icon: "info",
+                buttons: false,
+                timer: 1500
+            }).then(() => {
+                // Simulate data refresh
+                loadReceipts();
+                updateStatistics();
+                
+                swal({
+                    title: "Refreshed!",
+                    text: "Receipt data has been updated successfully.",
+                    icon: "success",
+                    timer: 2000
+                });
+            });
+        }
+
+        // Logout function
+        function logout() {
+            swal({
+                title: "Logout?",
+                text: "Are you sure you want to logout?",
+                icon: "warning",
+                buttons: ["Cancel", "Logout"],
+                dangerMode: true,
+            }).then((willLogout) => {
+                if (willLogout) {
+                    swal({
+                        title: "Logging out...",
+                        text: "Please wait while we securely log you out.",
+                        icon: "info",
+                        buttons: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = "print_login.html";
+                    });
+                }
+            });
+        }
+
+        // Add more sample data periodically (simulate real-time updates)
+        setInterval(() => {
+            // Randomly add new receipts (for demo purposes)
+            if (Math.random() < 0.1) { // 10% chance every 10 seconds
+                const newReceipt = {
+                    id: `RCP${String(receiptsData.length + 1).padStart(3, '0')}`,
+                    studentName: `Student ${receiptsData.length + 1}`,
+                    studentId: `CS/2021/${String(receiptsData.length + 1).padStart(3, '0')}`,
+                    amount: 100,
+                    date: new Date().toISOString().split('T')[0],
+                    status: 'pending',
+                    description: 'Cafe Payment - Lunch'
+                };
+                
+                receiptsData.push(newReceipt);
+                loadReceipts();
+                updateStatistics();
+                
+                // Show notification for new receipt
+                swal({
+                    title: "New Receipt!",
+                    text: `New payment received from ${newReceipt.studentName}`,
+                    icon: "info",
+                    timer: 3000
+                });
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
