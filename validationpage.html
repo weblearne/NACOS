@@ -1,3 +1,107 @@
+<!-- <?php 
+session_start(); // Ensure session starts at the top of the file
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    if (!isset($_POST['reg002'])){
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showDialog(`Your Registration number is Invalid`, false);
+            });
+        </script>";
+    } elseif (!isset($_POST['email'])){
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showDialog(`Your email address is Invalid`, false);
+            });
+        </script>";
+    } else {
+        $reg = trim($_POST['reg002']); 
+        $email = trim($_POST['email']); 
+        $payAmount = '1000';
+
+        
+
+        if (!preg_match("/^(NDCOM|DCOM|HNDSWD|HNDCOM)\/\d{2}\/[A-Z]{2,4}\/\d{4}$/", $reg)) {
+            echo "<script>alert('Invalid registration number format! Expected formats: NDCOM/24/CS/0000, DCOM/24/IT/0000, or HNDSWD/24/SWD/0000');</script>"; 
+            exit();
+        }
+
+        // Validate email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<script>alert('Invalid email format!');</script>"; 
+            exit();
+        }
+
+        if (strlen($reg) < 10 || strlen($reg) > 20) {
+            echo "<script>alert('Please check your Registration number');</script>"; 
+            exit();
+        } else {
+
+            include 'config.php';
+
+            $select = "SELECT * FROM student WHERE reg = '" . mysqli_real_escape_string($conn, $reg) . "'";
+            $result = mysqli_query($conn, $select);
+            $check = mysqli_num_rows($result);
+
+            if ($check > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $_SESSION['student'] = $row; // Save student info in session
+
+                $name = htmlspecialchars($row['name']);
+                $amount = htmlspecialchars($row['amount']);
+                $email = htmlspecialchars($row['email']);
+                
+                // if($email)
+                 if(strlen($email)<11){
+                    $getemail = $_POST['email'];
+                    $sql="UPDATE student SET email ='$getemail' WHERE reg='$reg'";
+                    if (mysqli_query($conn, $sql)) {
+                                                                      
+                                    }
+                      }
+                
+                // update the email 
+                // check if not in user info
+
+                
+
+                $message = "Dear <strong>" . $name . "</strong>, welcome to NACOS ABCOAD PAYMENT SYSTEM.<br>";
+                if (strlen($amount) > 1) {
+                    if ($amount < $payAmount) {
+                        $bls = $payAmount - $amount;
+                        $message .= "Your remaining balance is <strong>N" . $bls . "</strong><br>";
+                        echo "<script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                showDialog(`" . addslashes($message) . "`, true);
+                            });
+                        </script>";
+                    } else {
+                        $message .= "You have paid already.<br>";
+                        echo "<script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                showDialog(`" . addslashes($message) . "`, false);
+                            });
+                        </script>";
+                    }
+                } else {
+                    $message .= "You are about to pay for <br> <br> NACOS REG.: <strong>N500</strong> <br>ID CARD: <strong>N500</strong><br>TOTAL:<strong>N1000</strong> <br>";
+                    echo "<script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            showDialog(`" . addslashes($message) . "`, true);
+                        });
+                    </script>";
+                }
+            } else {
+                echo "<script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        showDialog(`Student info is not found`, false);
+                    });
+                </script>";
+            }
+        }
+    }
+}
+?> -->
 
 
 <!DOCTYPE html>

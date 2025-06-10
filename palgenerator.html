@@ -1,0 +1,75 @@
+
+<?php
+
+
+// API URL and token
+// Replace with your actual token
+// $name = "Saifullah";  // Replace with your actual token
+// $name2 = "Khamisu";  // Replace with your actual token
+// $phone_number = "09032334313";  // Replace with your actual token
+// $email = "khalid2@gmail.com";
+
+// Function to generate a random reference
+function generateRandomReference() {
+    return 'REF-' . strtoupper(bin2hex(random_bytes(8)));
+}
+
+// Request parameters (Payload)
+$apiUrl = "https://api.billstack.co/v2/thirdparty/generateVirtualAccount/";
+$token = "Bill_Stack-SEC-KEY-56fbe735738bb560a79f63afb53214c5"; 
+$data = [
+    "email" => "$email",  // Provide email
+    "reference" => generateRandomReference(),
+    "firstName" => "$name ",  // Provide first name
+    "lastName" => "$name ",  // Provide last name
+    "phone" => "$phone",  // Provide phone number
+    "bank" => "9PSB"
+];
+
+// Initialize cURL session
+$ch = curl_init($apiUrl);
+
+// Set cURL options
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer $token"
+]);
+
+// Execute the cURL request and get the response
+$response = curl_exec($ch);
+
+// Check for errors
+if ($response === false) {
+    echo "cURL Error: " . curl_error($ch);
+} else {
+    // Decode the JSON response
+    $responseData = json_decode($response, true);
+
+    // Check if the response is valid and contains the account data
+    if ($responseData['status'] === true && isset($responseData['data']['account'][0]['account_number'])) {
+        // Extract the account number
+        $accountNumber = $responseData['data']['account'][0]['account_number'];
+        $email = $responseData['data']['meta']['email'];
+     $sql="UPDATE student  SET ac_number ='$accountNumber'  WHERE email='$email'";
+        if (mysqli_query($conn, $sql)) {
+                                          
+        }
+        else{
+                                          
+    }
+
+
+
+
+    } else {
+        echo "<script>alert('Error: Unable to retrieve account number')</script> ";
+        //Error: Unable to retrieve account number. Cannot reserve Palmpay account at the moment.
+    }
+}
+
+// Close cURL session
+curl_close($ch);
+?>

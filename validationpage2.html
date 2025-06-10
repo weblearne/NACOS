@@ -1,0 +1,309 @@
+<!-- <?php 
+session_start(); // Ensure session starts at the top of the file
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    if (!isset($_POST['reg002'])){
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showDialog(`Your Registration number is Invalid`, false);
+            });
+        </script>";
+    } elseif (!isset($_POST['email'])){
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showDialog(`Your email address is Invalid`, false);
+            });
+        </script>";
+    } else {
+        $reg = trim($_POST['reg002']); 
+        $email = trim($_POST['email']); 
+        $payAmount = '1500';
+
+        
+
+        if (!preg_match("/^(NDCOM|DCOM|HNDSWD|HNDCOM)\/\d{2}\/[A-Z]{2,4}\/\d{4}$/", $reg)) {
+            echo "<script>alert('Invalid registration number format! Expected formats: NDCOM/24/CS/0000, DCOM/24/IT/0000, or HNDSWD/24/SWD/0000');</script>"; 
+            exit();
+        }
+
+        // Validate email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<script>alert('Invalid email format!');</script>"; 
+            exit();
+        }
+
+        if (strlen($reg) < 10 || strlen($reg) > 20) {
+            echo "<script>alert('Please check your Registration number');</script>"; 
+            exit();
+        } else {
+
+            include 'config.php';
+
+            $select = "SELECT * FROM student WHERE reg = '" . mysqli_real_escape_string($conn, $reg) . "'";
+            $result = mysqli_query($conn, $select);
+            $check = mysqli_num_rows($result);
+
+            if ($check > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $_SESSION['student'] = $row; // Save student info in session
+
+                $name = htmlspecialchars($row['name']);
+                $amount = htmlspecialchars($row['amount']);
+                $email = htmlspecialchars($row['email']);
+                
+                // if($email)
+                 if(strlen($email)<11){
+                    $getemail = $_POST['email'];
+                    $sql="UPDATE student SET email ='$getemail' WHERE reg='$reg'";
+                    if (mysqli_query($conn, $sql)) {
+                                                                      
+                                    }
+                      }
+                
+                // update the email 
+                // check if not in user info
+
+                
+
+                $message = "Dear <strong>" . $name . "</strong>, welcome to COMPUTER SCIENCE PAYMENT SYSTEM.<br>";
+                if (strlen($amount) > 1) {
+                    if ($amount < $payAmount) {
+                        $bls = $payAmount - $amount;
+                        $message .= "Your remaining balance is <strong>N" . $bls . "</strong><br>";
+                        echo "<script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                showDialog(`" . addslashes($message) . "`, true);
+                            });
+                        </script>";
+                    } else {
+                        $message .= "You have paid already.<br>";
+                        echo "<script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                showDialog(`" . addslashes($message) . "`, false);
+                            });
+                        </script>";
+                    }
+                } else {
+                    $message .= "You are about to pay for <br> <br> DEPARTMENTAL REG.: <strong>N500</strong> <br>G.P.A: <strong>N1000</strong><br>TOTAL:<strong>1500</strong> <br>";
+                    echo "<script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            showDialog(`" . addslashes($message) . "`, true);
+                        });
+                    </script>";
+                }
+            } else {
+                echo "<script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        showDialog(`Student info is not found`, false);
+                    });
+                </script>";
+            }
+        }
+    }
+}
+?> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Payment Verification</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        
+        h2 {
+            color: #000;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .title-green {
+            color: #008000;
+            margin-bottom: 15px;
+        }
+        
+        .marquee-container {
+            background-color: #f0f0f0;
+            padding: 8px;
+            margin: 15px 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        form {
+            margin: 20px 0;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        button {
+            width: 100%;
+            background-color: #008000;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #006400;
+        }
+        
+        .inquiry-section {
+            margin-top: 25px;
+            font-size: 16px;
+        }
+        
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #25D366;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-content {
+            margin-bottom: 20px;
+        }
+        
+        .modal button {
+            margin: 5px;
+            width: auto;
+            min-width: 100px;
+            padding: 10px 15px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="abcoalogo.PNG" alt="NACOS Logo" class="logo">
+        <h2 class="title-green">COMPUTER SCIENCE PAYMENT SYSTEM</h2>
+        <h2>Annual Dues</h2>
+        <h2>Student Payment Verification</h2>
+        
+        <div class="marquee-container">
+            <marquee>2024/2025 academic session</marquee>
+        </div>
+        
+        <form method="POST" action="">
+            <input type="text" name="reg002" placeholder="Enter Registration Number" required>
+            <input type="text" name="email" placeholder="Enter your email address" required>
+            <button type="submit">Verify</button>
+        </form>
+
+        <!-- Inquiry Section -->
+        <div class="inquiry-section">
+            <p>For further inquiries, contact President:</p>
+            <a href="https://wa.me/2347043527649" class="whatsapp-link" target="_blank">
+                <img src="whatsapp.png" class="whatsapp-icon" alt="WhatsApp">
+                Chat on WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal Dialog -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-content" id="dialog-content"></div>
+            <button id="proceed-btn" style="display: none;" onclick="window.location.href='payment.php'">Proceed</button>
+            <button onclick="closeDialog()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function showDialog(content, showProceed = false) {
+            document.getElementById("dialog-content").innerHTML = content;
+            document.getElementById("proceed-btn").style.display = showProceed ? "inline-block" : "none";
+            document.getElementById("modal-overlay").style.display = "flex";
+        }
+        
+        function closeDialog() {
+            document.getElementById("modal-overlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>

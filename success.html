@@ -1,5 +1,20 @@
 
 
+<!-- <?php
+
+
+// Example student data (these could come from a database or form)
+$studentName = "";
+$regNo = "";
+$email = "";
+$transactionId = "NACOS-2025-00123";
+$date = date("F d, Y");
+$amountPaid = "3,000";
+
+
+?> -->
+
+
 
 
 <!DOCTYPE html>
@@ -204,9 +219,13 @@
                     <div class="receipt-label">Payment Type:</div>
                     <div class="receipt-value">Annual Dues</div>
                 </div>
+                 <div class="receipt-row">
+                    <div class="receipt-label">REMARK:</div>
+                    <div class="receipt-value" style="font-size: 15PX;">NACOS REG:₦500, ID CARD: ₦500</div>
+                </div>
                 <div class="receipt-row">
                     <div class="receipt-label">Amount Paid:</div>
-                    <div class="receipt-value">&#8358;<?php echo "3,000" ?></div>
+                    <div class="receipt-value">&#8358;<?php echo "1000" ?></div>
                 </div>
                 <div class="receipt-row">
                     <div class="receipt-label">Payment Status:</div>

@@ -1,0 +1,271 @@
+<!-- 
+
+<?php
+
+
+// Example student data (these could come from a database or form)
+$studentName = "";
+$regNo = "";
+$email = "";
+$transactionId = "COM-2025-00123";
+$date = date("F d, Y");
+$amountPaid = "3,000";
+
+
+?> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Payment Receipt</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .receipt-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #008000;
+            padding-bottom: 15px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        
+        .receipt-title {
+            color: #008000;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #333;
+            font-size: 1.2em;
+        }
+        
+        .receipt-body {
+            margin-top: 20px;
+        }
+        
+        .receipt-info {
+            margin-bottom: 25px;
+        }
+        
+        .receipt-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .receipt-label {
+            flex: 1;
+            font-weight: bold;
+            color: #000000;
+        }
+        
+        .receipt-value {
+            flex: 2;
+            text-align: right;
+        }
+        
+        .payment-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .payment-title {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #008000;
+        }
+        
+        .receipt-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+        
+        .verification-code {
+            font-family: monospace;
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #008000;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .print-button {
+            display: block;
+            width: 100%;
+            background-color: #008000;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        
+        .print-button:hover {
+            background-color: #006400;
+        }
+        
+        @media print {
+            .print-button {
+                display: none;
+            }
+            
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .receipt-container {
+                box-shadow: none;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .receipt-container {
+                padding: 20px;
+            }
+            
+            .receipt-row {
+                flex-direction: column;
+            }
+            
+            .receipt-value {
+                text-align: left;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <img src="abcoalogo.png" alt="NACOS Logo" class="logo">
+            <h1 class="receipt-title">DEPARTMENT OF COMPUTER SCIENCE</h1>
+            <h2 class="subtitle">Payment Receipt</h2>
+            <p>2024/2025 Academic Session</p>
+        </div>
+        
+        <div class="receipt-body">
+            <div class="receipt-info">
+                <div class="receipt-row">
+                    <div class="receipt-label">Transaction ID:</div>
+                  <div class="receipt-value" id="transactionId"><?php echo $transactionId; ?></div>
+                </div>
+                <div class="receipt-row">
+                    <div class="receipt-label">Date:</div>
+                  <div class="receipt-value" id="date"><?php echo $date; ?></div>
+                </div>
+                <div class="receipt-row">
+                    <div class="receipt-label">Student Name:</div>
+                   <div class="receipt-value" id="studentName"><?php echo $studentName; ?></div>
+                </div>
+                <div class="receipt-row">
+                    <div class="receipt-label">Registration No:</div>
+               <div class="receipt-value" id="regNo"><?php echo $regNo; ?></div>
+                </div>
+                <div class="receipt-row">
+                    <div class="receipt-label">Email:</div>
+             <div class="receipt-value" id="email"><?php echo $email; ?></div>
+                </div>
+              
+            </div>
+            
+            <div class="payment-details">
+                <div class="payment-title">Payment Details</div>
+                <div class="receipt-row">
+                    <div class="receipt-label">Payment Type:</div>
+                    <div class="receipt-value">Annual Dues</div>
+                </div>
+                  <div class="receipt-row">
+                    <div class="receipt-label">REMARK:</div>
+                    <div class="receipt-value" style="font-size: 15PX;">DEPARTMENTAL REG:₦500, <br> G.P.A: ₦1000 FOR 2 SEMESTER</div>
+                </div>
+                <div class="receipt-row">
+                    <div class="receipt-label">Amount Paid:</div>
+                    <div class="receipt-value">&#8358;<?php echo "1,500" ?></div>
+                </div>
+                <div class="receipt-row">
+                    <div class="receipt-label">Payment Status:</div>
+                    <div class="receipt-value" style="color: #008000; font-weight: bold;">CONFIRMED</div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="receipt-footer">
+            <p>This is an electronic receipt. No signature required.</p>
+            <p>For inquiries, please contact the NACOS President: <a href="https://wa.me/2347043527649">WhatsApp</a></p>
+        </div>
+        
+        <button class="print-button" onclick="window.print()">Print Receipt</button>
+    </div>
+
+    <script>
+        // You can use this function to populate receipt with actual data
+        function populateReceipt(data) {
+            document.getElementById("transactionId").textContent = data.transactionId;
+            document.getElementById("date").textContent = data.date;
+            document.getElementById("studentName").textContent = data.studentName;
+            document.getElementById("regNo").textContent = data.regNo;
+            document.getElementById("email").textContent = data.email;
+            document.getElementById("phoneNumber").textContent = data.phoneNumber;
+            document.getElementById("parentPhone").textContent = data.parentPhone;
+        }
+        
+        // Example usage:
+        // const studentData = {
+        //     transactionId: "NACOS-2425-00124",
+        //     date: "April 16, 2025",
+        //     studentName: "Jane Smith",
+        //     regNo: "REG654321",
+        //     email: "jane@example.com",
+        //     phoneNumber: "+234 XXX XXX XXXX",
+        //     parentPhone: "+234 XXX XXX XXXX"
+        // };
+        // populateReceipt(studentData);
+    </script>
+</body>
+</html>
